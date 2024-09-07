@@ -1,4 +1,4 @@
-import { StorageEvent } from "./utilities/EventProcessor";
+import { StorageEvent } from './utilities/EventProcessor';
 
 export class EventDescriptor {
   constructor(
@@ -6,6 +6,6 @@ export class EventDescriptor {
     public readonly aggregateName: string,
     public readonly eventName: string,
     public readonly payload: StorageEvent,
-    public readonly version: number
+    public readonly version?: number
   ) {}
 }
