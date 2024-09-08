@@ -1,12 +1,22 @@
 import '@src/api/http/controllers';
 
-import { ICommand, IQuery, ICommandHandler, ICommandBus, IQueryBus, IQueryHandler, IEventHandler, createWinstonLogger } from '@cqrs-es/core';
+import {
+  ICommand,
+  IQuery,
+  ICommandHandler,
+  ICommandBus,
+  IQueryBus,
+  IQueryHandler,
+  IEventHandler,
+  createWinstonLogger,
+} from '@cqrs-es/core';
 import { errorHandler } from '@src/api/http/middlewares/error-handler';
 import { JobCreatedEventHandler } from '@src/application/events/handlers/job-created-handler';
 import { TYPES } from '@src/types';
 import { Application, urlencoded, json } from 'express';
 import { Container } from 'inversify';
 import { InversifyExpressServer } from 'inversify-express-utils';
+import winston from 'winston';
 
 import { JobCreated } from '@domain/events/job-created';
 import { JobUpdated } from '@domain/events/job-updated';
@@ -19,7 +29,6 @@ import { ArchiveJobCommandHandler } from './application/commands/handlers/archiv
 import { JobArchivedEventHandler } from './application/events/handlers/job-archived-handler';
 import { JobArchived } from './domain/events/job-archived';
 import { infrastructureModule } from './infrastructure/module';
-import winston from 'winston';
 
 const initialise = async () => {
   const container = new Container();

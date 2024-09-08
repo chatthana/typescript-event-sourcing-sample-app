@@ -1,10 +1,10 @@
-import { ApplicationError, IEventHandler, NotFoundException } from '@cqrs-es/core';
+import { IEventHandler, NotFoundException } from '@cqrs-es/core';
 import { inject, injectable } from 'inversify';
 import { Redis } from 'ioredis';
+import { Logger } from 'winston';
 
 import { ApplicationCreated } from '@src/domain/events/application-created';
 import { TYPES } from '@src/types';
-import { Logger } from 'winston';
 
 @injectable()
 export class ApplicationCreatedEventHandler implements IEventHandler<ApplicationCreated> {
@@ -12,7 +12,7 @@ export class ApplicationCreatedEventHandler implements IEventHandler<Application
 
   constructor(
     @inject(TYPES.Redis) private readonly _redisClient: Redis,
-    @inject(TYPES.Logger) private readonly _logger: Logger,
+    @inject(TYPES.Logger) private readonly _logger: Logger
   ) {}
 
   async handle(event: ApplicationCreated) {
@@ -21,7 +21,7 @@ export class ApplicationCreatedEventHandler implements IEventHandler<Application
     if (!job) {
       throw new NotFoundException('The related job does not exist or is in sync');
     }
-    
+
     const parsedJob = JSON.parse(job);
     await this._redisClient.set(
       `application:${event.guid}`,
@@ -37,6 +37,6 @@ export class ApplicationCreatedEventHandler implements IEventHandler<Application
       })
     );
 
-    this._logger.info(`created read model for the application ${JSON.stringify(event)}`)
+    this._logger.info(`created read model for the application ${JSON.stringify(event)}`);
   }
 }

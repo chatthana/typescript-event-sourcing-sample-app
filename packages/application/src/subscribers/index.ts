@@ -1,17 +1,17 @@
+import { IEventBus } from '@cqrs-es/core';
 import * as dotenv from 'dotenv';
 dotenv.config();
-
 import 'reflect-metadata';
+import { Consumer } from 'kafkajs';
+
+import config from '@config/main';
 
 import { initialise } from '../startup';
 import { TYPES } from '../types';
-import { IEventBus } from '@cqrs-es/core';
-import { Consumer } from 'kafkajs';
-import config from '@config/main';
 
 (async () => {
   const container = await initialise();
-  
+
   const kafkaConsumer = container.get<Consumer>(TYPES.KafkaConsumer);
   kafkaConsumer.connect();
 
